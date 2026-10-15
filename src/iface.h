@@ -1,3 +1,9 @@
+/**
+ * @file iface.h
+ * @brief Network interface discovery and basic address types.
+ */
+
+
 #ifndef IFACE_H
 #define IFACE_H
 
@@ -23,7 +29,20 @@ typedef struct {
   int has_ipv6;
 } iface_t;
 
+
+/**
+ * @brief Print active interfaces.
+ * @return 0 on success, -1 on error.
+ */
 int list_interfaces(void);
+
+/**
+ * @brief Fill @ref iface_t for a given interface name.
+ *
+ * @param ifname Interface name (e.g., "eth0").
+ * @param iface Output structure.
+ * @return 0 on success, -1 on error.
+ */
 int get_interface_info(const char *ifname, iface_t *iface);
 
 #endif

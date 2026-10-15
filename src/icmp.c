@@ -1,4 +1,11 @@
+/**
+ * @file icmp.c
+ * @brief ICMPv4 echo request scanning implementation.
+ */
+
+#define _GNU_SOURCE
 #define _POSIX_C_SOURCE 199309L
+#include "iface.h"
 #include "icmp.h"
 #include <stdio.h>
 #include <string.h>
@@ -11,11 +18,17 @@
 #include <time.h>
 #include <fcntl.h>
 #include "compat.h"
+#include <linux/if.h>
 
 // Send single ICMP echo request
-static int send_icmp_request(ip_addr_t target_ip, uint16_t id, uint16_t seq) {
+static int send_icmp_request(const iface_t *iface, ip_addr_t target_ip, uint16_t id, uint16_t seq) {
   int sock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
   if (sock < 0) { perror("socket"); return -1; }
+
+  if (setsockopt(sock, SOL_SOCKET, SO_BINDTODEVICE, iface->name, strlen(iface->name)) < 0) {
+    perror("SO_BINDTODEVICE");
+    return -1;
+  }
 
   struct icmphdr icmp_hdr;
   memset(&icmp_hdr, 0, sizeof(icmp_hdr));
@@ -43,7 +56,7 @@ static int send_icmp_request(ip_addr_t target_ip, uint16_t id, uint16_t seq) {
 }
 
 // Scan single host via ICMP, per-host timeout
-int scan_single_icmp(ip_addr_t target_ip, int timeout_ms, icmp_result_t *res) {
+int scan_single_icmp(const iface_t *iface, ip_addr_t target_ip, int timeout_ms, icmp_result_t *res) {
   int sock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
   if (sock < 0) {
     perror("socket");
@@ -64,7 +77,7 @@ int scan_single_icmp(ip_addr_t target_ip, int timeout_ms, icmp_result_t *res) {
   uint16_t id = (uint16_t)getpid();
   uint16_t seq = 0;
 
-  if (send_icmp_request(target_ip, id, seq) != 0) {
+  if (send_icmp_request(iface, target_ip, id, seq) != 0) {
     close(sock);
     return -1;
   }

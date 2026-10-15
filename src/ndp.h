@@ -1,3 +1,8 @@
+/**
+ * @file ndp.h
+ * @brief IPv6 Neighbor Discovery (Neighbor Solicitation/Advertisement) scan.
+ */
+
 #ifndef NDP_H
 #define NDP_H
 
@@ -64,6 +69,16 @@ typedef struct {
   uint8_t mac[6];
 } __attribute__((packed)) ndp_opt_lladdr_t;
 
+/**
+ * @brief Send NDP Neighbor Solicitation and wait for Neighbor Advertisement.
+ *
+ * @param handle libpcap capture handle (used for both inject and capture).
+ * @param iface Source interface info (MAC + IPv6 required).
+ * @param target_ip Target IPv6 address (ip.family must be AF_INET6).
+ * @param timeout_ms Timeout in milliseconds.
+ * @param result Output result.
+ * @return 0 on success (even if no reply), -1 on fatal error.
+ */
 int scan_single_ndp(pcap_t *handle, const iface_t *iface, const ip_addr_t target_ip, int timeout_ms, ndp_result_t *result);
 
 #endif

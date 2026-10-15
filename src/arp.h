@@ -1,3 +1,8 @@
+/**
+ * @file arp.h
+ * @brief ARP scan for IPv4 hosts (MAC resolution).
+ */
+
 #ifndef ARP_H
 #define ARP_H
 
@@ -28,6 +33,16 @@ typedef struct {
   int ok;
 } arp_result_t;
 
+/**
+ * @brief Send ARP request and wait for ARP reply for the target.
+ *
+ * @param handle libpcap capture handle for receiving frames.
+ * @param iface Source interface info (MAC + IPv4 required).
+ * @param target_ip Target IPv4 address (ip.family must be AF_INET).
+ * @param timeout_ms Timeout in milliseconds.
+ * @param res Output result.
+ * @return 0 on success (even if no reply), -1 on fatal error.
+ */
 int scan_single_arp(pcap_t *handle, const iface_t *iface, ip_addr_t target_ip, int timeout_ms, arp_result_t *res);
 
 #endif

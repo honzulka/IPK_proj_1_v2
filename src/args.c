@@ -1,3 +1,8 @@
+/**
+ * @file args.c
+ * @brief Implementation of command-line parsing.
+ */
+
 #include "args.h"
 #include <stdio.h>
 #include <stdlib.h>

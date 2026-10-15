@@ -1,3 +1,8 @@
+/**
+ * @file compat.h
+ * @brief Small compatibility typedefs and common utilities.
+ */
+
 #ifndef COMPAT_H
 #define COMPAT_H
 
@@ -15,6 +20,13 @@ typedef uint16_t u_short;
 typedef uint32_t u_int;
 #endif
 
+/**
+ * @brief Compute RFC 1071 checksum over a memory buffer.
+ *
+ * @param b Pointer to buffer.
+ * @param len Buffer length in bytes.
+ * @return Checksum in host byte order.
+ */
 uint16_t checksum(void *b, int len);
 
 #endif

@@ -1,3 +1,7 @@
+/**
+ * @file iface.c
+ * @brief Interface listing and interface detail retrieval using getifaddrs().
+ */
 #include "iface.h"
 #include <stdio.h>
 #include <string.h>

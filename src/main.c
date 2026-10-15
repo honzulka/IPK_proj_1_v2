@@ -1,3 +1,12 @@
+/**
+ * @file main.c
+ * @brief Entry point and scan orchestration (ARP/ICMPv4 + NDP/ICMPv6).
+ *
+ * The tool iterates over given subnets and for each host performs:
+ * - IPv4: ARP + ICMP echo
+ * - IPv6: NDP + ICMPv6 echo (only if NDP succeeded)
+ */
+
 #include <stdio.h>
 #include <stdint.h>
 #include <sys/socket.h>
@@ -102,7 +111,7 @@ int main(int argc, char **argv) {
 
         icmp_res.ip = ip;
 
-        if (scan_single_icmp(ip, args.timeout_ms, &icmp_res) != 0) {
+        if (scan_single_icmp(&iface, ip, args.timeout_ms, &icmp_res) != 0) {
           pcap_close(handle);
           return -1;
         }

@@ -1,3 +1,8 @@
+/**
+ * @file subnet.c
+ * @brief CIDR parsing and host iteration implementation.
+ */
+
 #include "subnet.h"
 #include <stdio.h>
 #include <stdlib.h>

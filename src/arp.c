@@ -1,3 +1,8 @@
+/**
+ * @file arp.c
+ * @brief ARP request sending and reply matching via libpcap.
+ */
+
 #define _POSIX_C_SOURCE 199309L
 #include "arp.h"
 #include <stdio.h>
